@@ -1,4 +1,4 @@
-import HeaderProfileView from './view/hearder-profile-view.js';
+import HeaderProfileView from './view/header-profile-view.js';
 import { render } from './render.js';
 
 const bodyElement = document.querySelector('body');
