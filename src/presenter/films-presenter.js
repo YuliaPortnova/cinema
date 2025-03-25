@@ -15,8 +15,11 @@ export default class FilmsPresenter {
   filmsComponent = new FilmsView();
   sortComponent = new SortView();
 
-  init(container) {
+  init(container, filmsModel) {
     this.container = container;
+    this.filmsModel = filmsModel;
+
+    this.films = [...filmsModel.getFilms()];
 
     render(this.sortComponent, this.container);
     render(this.filmsComponent, this.container);
