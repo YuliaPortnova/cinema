@@ -5,7 +5,14 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-const getRandomValue = (items) =>
-  items[getRandomInteger(0, items.length - 1)];
+const getRandomValue = (items) => items[getRandomInteger(0, items.length - 1)];
 
-export {getRandomInteger, getRandomValue};
+const formatStringToDate = (date) => new Date(date).toLocaleString('en-GB', {day: '2-digit', month: 'long', year: 'numeric'});
+
+const formatMinutesToTime = (minutes) => {
+  const MINUTES_PER_HOUR = 60;
+  const time = (minutes > MINUTES_PER_HOUR) ? `${Math.floor(minutes / MINUTES_PER_HOUR)}h ${minutes % MINUTES_PER_HOUR}m` : `${minutes}m`;
+  return time;
+};
+
+export {getRandomInteger, getRandomValue, formatStringToDate, formatMinutesToTime};

@@ -2,17 +2,23 @@ import { createElement } from '../render.js';
 import { createFilmCardInfoTemplate } from './film-card-info-template.js';
 import { createFilmCardControlsTemplate } from './film-card-controls-template.js';
 
-const createFilmCardTemplate = () =>
-  `
-    <article class="film-card">
-      ${createFilmCardInfoTemplate()}
+const createFilmCardTemplate = (film) => {
+  const {filmInfo} = film;
+  return (
+    `<article class="film-card">
+      ${createFilmCardInfoTemplate(filmInfo)}
       ${createFilmCardControlsTemplate()}
-    </article>
-  `;
+    </article>`
+  );
+};
 
 export default class FilmCardView {
+  constructor(film) {
+    this.film = film;
+  }
+
   getTemplate() {
-    return createFilmCardTemplate();
+    return createFilmCardTemplate(this.film);
   }
 
   getElement() {

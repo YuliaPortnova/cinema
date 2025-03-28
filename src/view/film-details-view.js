@@ -4,9 +4,11 @@ import { createFilmDetailsControlsTemplate } from './film-details-controls-templ
 import { createFilmDetailsCommentsTemplate } from './film-details-comments-template.js';
 import { createFilmDetailsFormTemplate } from './film-details-form-template.js';
 
-const createFilmDetailsTemplate = () =>
-  `
-    <section class="film-details">
+const createFilmDetailsTemplate = (film) => {
+  const { filmInfo } = film;
+
+  return (
+    `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
         <div class="film-details__top-container">
           <div class="film-details__close">
@@ -19,7 +21,7 @@ const createFilmDetailsTemplate = () =>
               <p class="film-details__age">18+</p>
             </div>
 
-            ${createFilmDetailsInfoTemplate()}
+            ${createFilmDetailsInfoTemplate(filmInfo)}
           </div>
 
           ${createFilmDetailsControlsTemplate()}
@@ -35,12 +37,17 @@ const createFilmDetailsTemplate = () =>
           </section>
         </div>
       </form>
-    </section>
-  `;
+    </section>`
+  );
+};
 
 export default class FilmDetailsView {
+  constructor (film) {
+    this.film = film;
+  }
+
   getTemplate() {
-    return createFilmDetailsTemplate();
+    return createFilmDetailsTemplate(this.film);
   }
 
   getElement() {
