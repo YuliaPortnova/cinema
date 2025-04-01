@@ -1,12 +1,24 @@
 import { getRandomInteger, getRandomValue } from '../utils.js';
 import { nanoid } from 'nanoid';
-import { Rating, AgeRating, Runtime, directors, writers, actors, titles, posters, genres, description, countries,
-} from './const.js';
+import { Rating, AgeRating, Runtime, directors, writers, actors, titles, posters, genres, description, countries, MAX_COMMENTS_ON_FILM, MOVIES_COUNT } from './const.js';
 
-export const generateFilm = () => (
-  {
+let totalCommentsCount = 0;
+
+const generateFilm = () => {
+  const hasComments = getRandomInteger(0, 1);
+
+  const filmCommentsCount = hasComments
+    ? getRandomInteger(1, MAX_COMMENTS_ON_FILM)
+    : 0;
+
+  totalCommentsCount += filmCommentsCount;
+
+  return ({
     id: nanoid(),
-    comments: [],
+    comments: (hasComments)
+      ? Array.from({length: filmCommentsCount}, (_value, commentIndex) => String(totalCommentsCount - commentIndex)
+      )
+      : [],
     filmInfo: {
       title: getRandomValue(titles),
       alternativeTitle: getRandomValue(titles),
@@ -30,5 +42,7 @@ export const generateFilm = () => (
       watchingDate: new Date(2025, 0, 1),
       favorite: false
     }
-  }
-);
+  });
+};
+
+export const generateFilms = () => Array.from({length: MOVIES_COUNT}, generateFilm);

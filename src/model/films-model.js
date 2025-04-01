@@ -1,9 +1,7 @@
-import { generateFilm } from '../mock/film.js';
-
-const MOVIES_COUNT = 20;
+import { generateFilms } from '../mock/film.js';
 
 export default class FilmsModel {
-  #films = Array.from({length: MOVIES_COUNT}, generateFilm);
+  #films = generateFilms();
 
   getFilms = () => this.#films;
 }

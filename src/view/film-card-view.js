@@ -3,10 +3,10 @@ import { createFilmCardInfoTemplate } from './film-card-info-template.js';
 import { createFilmCardControlsTemplate } from './film-card-controls-template.js';
 
 const createFilmCardTemplate = (film) => {
-  const {filmInfo} = film;
+  const {filmInfo, comments} = film;
   return (
     `<article class="film-card">
-      ${createFilmCardInfoTemplate(filmInfo)}
+      ${createFilmCardInfoTemplate(filmInfo, comments)}
       ${createFilmCardControlsTemplate()}
     </article>`
   );

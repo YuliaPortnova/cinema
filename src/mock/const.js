@@ -1,3 +1,6 @@
+const MAX_COMMENTS_ON_FILM = 7;
+const MOVIES_COUNT = 10;
+
 const Rating = {
   MIN: 0,
   MAX: 10
@@ -106,5 +109,7 @@ export {
   emotions,
   description,
   comment,
-  countries
+  countries,
+  MAX_COMMENTS_ON_FILM,
+  MOVIES_COUNT
 };

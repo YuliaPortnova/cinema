@@ -15,9 +15,10 @@ export default class FilmsPresenter {
   filmsComponent = new FilmsView();
   sortComponent = new SortView();
 
-  init(container, filmsModel) {
+  init(container, filmsModel, commentsModel) {
     this.container = container;
     this.filmsModel = filmsModel;
+    this.commentsModel = commentsModel;
 
     this.films = [...filmsModel.getFilms()];
 
@@ -31,6 +32,9 @@ export default class FilmsPresenter {
     }
 
     render(this.filmButtonMoreComponent, this.filmsListComponent.getElement());
-    render(new FilmDetailsView(this.films[0]), this.container.parentElement);
+
+    const comments = [...this.commentsModel.get(this.films[0])];
+
+    render(new FilmDetailsView(this.films[0], comments), this.container.parentElement);
   }
 }
