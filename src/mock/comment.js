@@ -23,8 +23,8 @@ const generateComments = (films) => {
     return {
       id: String(index + 1),
       ...commentItem,
-    }
+    };
   });
-}
+};
 
 export { generateComments };
