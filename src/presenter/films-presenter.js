@@ -15,6 +15,7 @@ export default class FilmsPresenter {
   #filmsComponent = new FilmsView();
   #sortComponent = new SortView();
 
+  #filmDetailsComponent = null;
   #container = null;
   #filmsModel = null;
   #commentsModel = null;
@@ -33,14 +34,55 @@ export default class FilmsPresenter {
     render(this.#filmsListComponent, this.#filmsComponent.element);
     render(this.#filmsListContainerComponent, this.#filmsListComponent.element);
 
-    for (let i = 0; i < this.#films.length; i++) {
-      render(new FilmCardView(this.#films[i]), this.#filmsListContainerComponent.element);
-    }
+    this.#films.forEach((film) => {
+      this.#renderFilm(film, this.#filmsListContainerComponent);
+    });
 
     render(this.#filmButtonMoreComponent, this.#filmsListComponent.element);
-
-    const comments = [...this.#commentsModel.get(this.#films[0])];
-
-    render(new FilmDetailsView(this.#films[0], comments), this.#container.parentElement);
   }
+
+  #renderFilm(film, container) {
+    const filmCardComponent = new FilmCardView(film);
+
+    const linkFilmCardElement = filmCardComponent.element.querySelector('a');
+
+    linkFilmCardElement.addEventListener('click', () => {
+      this.#addFilmDetailsComponent(film);
+      document.addEventListener('keydown', this.#onEscKeyDown);
+    });
+    render(filmCardComponent, container.element);
+  }
+
+  #renderFilmDetails(film) {
+    const comments = [...this.#commentsModel.get(film)];
+    this.#filmDetailsComponent = new FilmDetailsView(film, comments);
+
+    const closeButtonFilmDetailsElement = this.#filmDetailsComponent.element.querySelector('.film-details__close-btn');
+
+    closeButtonFilmDetailsElement.addEventListener('click', () => {
+      this.#removeFilmDetailsComponent();
+      document.removeEventListener('keydown', this.#onEscKeyDown);
+    });
+
+    render(this.#filmDetailsComponent, this.#container.parentElement);
+  }
+
+  #addFilmDetailsComponent = (film) => {
+    this.#renderFilmDetails(film);
+    document.body.classList.add('hide-overflow');
+  };
+
+  #removeFilmDetailsComponent = () => {
+    this.#filmDetailsComponent.element.remove();
+    this.#filmDetailsComponent.removeElement();
+    document.body.classList.remove('hide-overflow');
+  };
+
+  #onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      this.#removeFilmDetailsComponent();
+      document.removeEventListener('keydown', this.#onEscKeyDown);
+    }
+  };
 }
