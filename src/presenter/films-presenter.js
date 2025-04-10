@@ -6,7 +6,7 @@ import FilmsListView from '../view/films-list-view.js';
 import FilmsView from '../view/films-view.js';
 import SortView from '../view/sort-view.js';
 
-import { render } from '../render.js';
+import { render } from '../framework/render.js';
 import FilmsListEmptyView from '../view/films-list-empty.js';
 
 const FILMS_COUNT_PER_STEP = 5;
