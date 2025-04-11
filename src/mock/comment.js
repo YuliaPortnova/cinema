@@ -1,4 +1,4 @@
-import { getRandomValue } from '../utils.js';
+import { getRandomValue } from '../utils/common.js';
 import { emotions, comment } from './const.js';
 
 const generateComment = () => (

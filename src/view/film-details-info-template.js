@@ -1,4 +1,4 @@
-import { formatStringToDate, formatMinutesToTime } from '../utils.js';
+import { formatStringToDate, formatMinutesToTime } from '../utils/film.js';
 
 export const createFilmDetailsInfoTemplate = (filmInfo) => {
   const { title, alternativeTitle, totalRating, director, writers, actors, release, runtime, description, genre } = filmInfo;

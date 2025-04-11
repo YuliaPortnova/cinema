@@ -1,4 +1,4 @@
-import { getRandomInteger, getRandomValue } from '../utils.js';
+import { getRandomInteger, getRandomValue } from '../utils/common.js';
 import { nanoid } from 'nanoid';
 import { Rating, AgeRating, Runtime, directors, writers, actors, titles, posters, genres, description, countries, MAX_COMMENTS_ON_FILM, MOVIES_COUNT } from './const.js';
 

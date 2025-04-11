@@ -6,7 +6,7 @@ import FilmsListView from '../view/films-list-view.js';
 import FilmsView from '../view/films-view.js';
 import SortView from '../view/sort-view.js';
 
-import { render } from '../framework/render.js';
+import { render, remove } from '../framework/render.js';
 import FilmsListEmptyView from '../view/films-list-empty.js';
 
 const FILMS_COUNT_PER_STEP = 5;
@@ -66,8 +66,7 @@ export default class FilmsPresenter {
   };
 
   #removeFilmDetailsComponent = () => {
-    this.#filmDetailsComponent.element.remove();
-    this.#filmDetailsComponent.removeElement();
+    remove(this.#filmDetailsComponent);
     document.body.classList.remove('hide-overflow');
   };
 
@@ -89,8 +88,7 @@ export default class FilmsPresenter {
     this.#renderedFilmsCount += FILMS_COUNT_PER_STEP;
 
     if (this.#renderedFilmsCount >= this.#films.length) {
-      this.#filmButtonMoreComponent.element.remove();
-      this.#filmButtonMoreComponent.removeElement();
+      remove(this.#filmButtonMoreComponent);
     }
   };
 
