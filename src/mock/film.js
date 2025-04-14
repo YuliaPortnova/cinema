@@ -12,6 +12,7 @@ const generateFilm = () => {
     : 0;
 
   totalCommentsCount += filmCommentsCount;
+  const alreadyWatched = Boolean(getRandomInteger(0, 1));
 
   return ({
     id: nanoid(),
@@ -37,10 +38,10 @@ const generateFilm = () => {
       description
     },
     userDetails: {
-      watchlist: false,
-      alreadyWatched: true,
-      watchingDate: new Date(2025, 0, 1),
-      favorite: false
+      watchlist: Boolean(getRandomInteger(0, 1)),
+      alreadyWatched,
+      watchingDate: (alreadyWatched) ? new Date(2025, 0, 1) : null,
+      favorite: Boolean(getRandomInteger(0, 1))
     }
   });
 };

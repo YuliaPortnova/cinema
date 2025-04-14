@@ -6,6 +6,7 @@ import FilmsModel from './model/films-model.js';
 import CommentsModel from './model/comments-model.js';
 
 import { render } from './framework/render.js';
+import { getUserStatus } from './utils/user.js';
 
 const bodyElement = document.querySelector('body');
 const siteHeaderElement = bodyElement.querySelector('.header');
@@ -18,8 +19,11 @@ const commentsModel = new CommentsModel(filmsModel);
 
 const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, commentsModel);
 
-render(new HeaderProfileView(), siteHeaderElement);
+const userStatus = getUserStatus(filmsModel.films);
+const filmsCount = filmsModel.films.length;
+
+render(new HeaderProfileView(userStatus), siteHeaderElement);
 render(new FilterView(), siteMainElement);
-render(new FooterStatisticsView(), footerStatisticsElement);
+render(new FooterStatisticsView(filmsCount), footerStatisticsElement);
 
 filmsPresenter.init();
