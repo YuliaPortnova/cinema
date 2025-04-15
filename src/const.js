@@ -1,9 +1,11 @@
 const FilterType = {
-  ALL: 'All movies',
-  WATCHLIST: 'Watchlist',
-  HISTORY: 'History',
-  FAVORITES: 'Favorites',
+  ALL: 'all',
+  WATCHLIST: 'watchlist',
+  HISTORY: 'history',
+  FAVORITES: 'favorites',
 };
+
+const FILTER_TYPE_ALL_NAME = 'All movies';
 
 const UserStatusValue = {
   NOVICE: 0,
@@ -19,6 +21,7 @@ const UserStatusTitle = {
 
 export {
   FilterType,
+  FILTER_TYPE_ALL_NAME,
   UserStatusValue,
   UserStatusTitle
 };
