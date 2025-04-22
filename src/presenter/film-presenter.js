@@ -4,6 +4,7 @@ import { render, replace, remove } from '../framework/render.js';
 export default class FilmPresenter {
   #container = null;
 
+  #changeData = null;
   #clickCardHandler = null;
   #escKeyDownHandler = null;
 
@@ -11,8 +12,9 @@ export default class FilmPresenter {
 
   #film = null;
 
-  constructor (container, clickCardHandler, escKeyDownHandler) {
+  constructor (container, changeData, clickCardHandler, escKeyDownHandler) {
     this.#container = container;
+    this.#changeData = changeData;
     this.#clickCardHandler = clickCardHandler;
     this.#escKeyDownHandler = escKeyDownHandler;
   }
@@ -21,6 +23,10 @@ export default class FilmPresenter {
     this.#film = film;
     const prevFilmCardComponent = this.#filmCardComponent;
     this.#filmCardComponent = new FilmCardView(this.#film);
+
+    this.#filmCardComponent.setWatchlistBtnClickHandler(this.#watchlistBtnClickHandler);
+    this.#filmCardComponent.setWatchedBtnClickHandler(this.#watchedBtnClickHandler);
+    this.#filmCardComponent.setFavoriteBtnClickHandler(this.#favoriteBtnClickHandler);
 
     this.#filmCardComponent.setCardClickHandler(() => {
       this.#clickCardHandler(this.#film);
@@ -35,10 +41,40 @@ export default class FilmPresenter {
     replace(this.#filmCardComponent, prevFilmCardComponent);
 
     remove(prevFilmCardComponent);
-  }
+  };
 
   destroy = () => {
     remove(this.#filmCardComponent);
+  };
+
+  #watchlistBtnClickHandler = () => {
+    this.#changeData({
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        watchlist: !this.#film.userDetails.watchlist
+      },
+    });
+  };
+
+  #watchedBtnClickHandler = () => {
+    this.#changeData({
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        alreadyWatched: !this.#film.userDetails.alreadyWatched
+      },
+    });
+  };
+
+  #favoriteBtnClickHandler = () => {
+    this.#changeData({
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        favorite: !this.#film.userDetails.favorite
+      },
+    });
   };
 }
 

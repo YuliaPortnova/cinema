@@ -5,7 +5,7 @@ import { createFilmDetailsCommentsTemplate } from './film-details-comments-templ
 import { createFilmDetailsFormTemplate } from './film-details-form-template.js';
 
 const createFilmDetailsTemplate = (film, comments) => {
-  const { filmInfo } = film;
+  const { filmInfo, userDetails } = film;
   const { poster } = filmInfo;
 
   return (
@@ -25,7 +25,7 @@ const createFilmDetailsTemplate = (film, comments) => {
             ${createFilmDetailsInfoTemplate(filmInfo)}
           </div>
 
-          ${createFilmDetailsControlsTemplate()}
+          ${createFilmDetailsControlsTemplate(userDetails)}
         </div>
 
         <div class="film-details__bottom-container">
@@ -61,8 +61,44 @@ export default class FilmDetailsView extends AbstractView {
     this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#closeButtonClickHandler);
   }
 
+  setWatchlistBtnClickHandler(callback) {
+    this._callback.watchlistBtnClick = callback;
+    this.element
+      .querySelector('.film-details__control-button--watchlist')
+      .addEventListener('click', this.#watchlistBtnClickHandler);
+  }
+
+  setWatchedBtnClickHandler(callback) {
+    this._callback.watchedBtnClick = callback;
+    this.element
+      .querySelector('.film-details__control-button--watched')
+      .addEventListener('click', this.#watchedBtnClickHandler);
+  }
+
+  setFavoriteBtnClickHandler(callback) {
+    this._callback.favoriteBtnClick = callback;
+    this.element
+      .querySelector('.film-details__control-button--favorite')
+      .addEventListener('click', this.#favoriteBtnClickHandler);
+  }
+
   #closeButtonClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.closeButtonClick();
+  };
+
+  #watchlistBtnClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.watchlistBtnClick();
+  };
+
+  #watchedBtnClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.watchedBtnClick();
+  };
+
+  #favoriteBtnClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.favoriteBtnClick();
   };
 }

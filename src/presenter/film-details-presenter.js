@@ -4,6 +4,7 @@ import { render, replace, remove } from '../framework/render';
 export default class FilmDetailsPresenter {
   #container = null;
 
+  #changeData;
   #closeBtnClickHandler = null;
   #escKeyDownHandler = null;
 
@@ -12,8 +13,9 @@ export default class FilmDetailsPresenter {
   #film = null;
   #comments = null;
 
-  constructor (container, closeBtnClickHandler, escKeyDownHandler) {
+  constructor (container, changeData, closeBtnClickHandler, escKeyDownHandler) {
     this.#container = container;
+    this.#changeData = changeData;
     this.#closeBtnClickHandler = closeBtnClickHandler;
     this.#escKeyDownHandler = escKeyDownHandler;
   }
@@ -30,6 +32,10 @@ export default class FilmDetailsPresenter {
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     });
 
+    this.#filmDetailsComponent.setWatchlistBtnClickHandler(this.#watchlistBtnClickHandler);
+    this.#filmDetailsComponent.setWatchedBtnClickHandler(this.#watchedBtnClickHandler);
+    this.#filmDetailsComponent.setFavoriteBtnClickHandler(this.#favoriteBtnClickHandler);
+
     if (prevFilmDetailsComponent === null) {
       render(this.#filmDetailsComponent, this.#container);
       return;
@@ -42,5 +48,35 @@ export default class FilmDetailsPresenter {
 
   destroy = () => {
     remove(this.#filmDetailsComponent);
+  };
+
+  #watchlistBtnClickHandler = () => {
+    this.#changeData({
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        watchlist: !this.#film.userDetails.watchlist
+      },
+    });
+  };
+
+  #watchedBtnClickHandler = () => {
+    this.#changeData({
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        alreadyWatched: !this.#film.userDetails.alreadyWatched
+      },
+    });
+  };
+
+  #favoriteBtnClickHandler = () => {
+    this.#changeData({
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        favorite: !this.#film.userDetails.favorite
+      },
+    });
   };
 }

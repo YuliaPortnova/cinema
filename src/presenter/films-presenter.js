@@ -8,6 +8,7 @@ import FilmPresenter from './film-presenter.js';
 import FilmDetailsPresenter from './film-details-presenter.js';
 
 import { render, remove } from '../framework/render.js';
+import { updateItem } from '../utils/common.js';
 import FilmsListEmptyView from '../view/films-list-empty.js';
 
 const FILMS_COUNT_PER_STEP = 5;
@@ -44,9 +45,20 @@ export default class FilmsPresenter {
     this.#renderFilmBoard();
   }
 
+  #filmChangeHandler = (updatedFilm) => {
+    this.#films = updateItem(this.#films, updatedFilm);
+    this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
+
+    if (this.#filmDetailsPresenter && this.#selectedFilm.id === updatedFilm.id) {
+      this.#selectedFilm = updatedFilm;
+      this.#renderFilmDetails();
+    }
+  };
+
   #renderFilm(film, container) {
     const filmPresenter = new FilmPresenter(
       container,
+      this.#filmChangeHandler,
       this.#addFilmDetailsComponent,
       this.#escKeyDownHandler
     );
@@ -101,6 +113,7 @@ export default class FilmsPresenter {
     if(!this.#filmDetailsPresenter) {
       this.#filmDetailsPresenter = new FilmDetailsPresenter(
         this.#container.parentNode,
+        this.#filmChangeHandler,
         this.#removeFilmDetailsComponent,
         this.#escKeyDownHandler
       );

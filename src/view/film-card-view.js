@@ -3,11 +3,11 @@ import { createFilmCardInfoTemplate } from './film-card-info-template.js';
 import { createFilmCardControlsTemplate } from './film-card-controls-template.js';
 
 const createFilmCardTemplate = (film) => {
-  const {filmInfo, comments} = film;
+  const {filmInfo, comments, userDetails} = film;
   return (
     `<article class="film-card">
       ${createFilmCardInfoTemplate(filmInfo, comments)}
-      ${createFilmCardControlsTemplate()}
+      ${createFilmCardControlsTemplate(userDetails)}
     </article>`
   );
 };
@@ -29,8 +29,44 @@ export default class FilmCardView extends AbstractView {
     this.element.querySelector('a').addEventListener('click', this.#cardClickHandler)
   }
 
+  setWatchlistBtnClickHandler(callback) {
+    this._callback.watchlistBtnClick = callback;
+    this.element
+      .querySelector('.film-card__controls-item--add-to-watchlist')
+      .addEventListener('click', this.#watchlistBtnClickHandler);
+  }
+
+  setWatchedBtnClickHandler(callback) {
+    this._callback.watchedBtnClick = callback;
+    this.element
+      .querySelector('.film-card__controls-item--mark-as-watched')
+      .addEventListener('click', this.#watchedBtnClickHandler);
+  }
+
+  setFavoriteBtnClickHandler(callback) {
+    this._callback.favoriteBtnClick = callback;
+    this.element
+      .querySelector('.film-card__controls-item--favorite')
+      .addEventListener('click', this.#favoriteBtnClickHandler);
+  }
+
   #cardClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.cardClick();
+  };
+
+  #watchlistBtnClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.watchlistBtnClick();
+  };
+
+  #watchedBtnClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.watchedBtnClick();
+  };
+
+  #favoriteBtnClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.favoriteBtnClick();
   };
 }
