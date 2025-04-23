@@ -1,3 +1,5 @@
+const FILMS_COUNT_PER_STEP = 5;
+
 const FilterType = {
   ALL: 'all',
   WATCHLIST: 'watchlist',
@@ -20,6 +22,7 @@ const UserStatusTitle = {
 };
 
 export {
+  FILMS_COUNT_PER_STEP,
   FilterType,
   FILTER_TYPE_ALL_NAME,
   UserStatusValue,
