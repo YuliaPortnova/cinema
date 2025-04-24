@@ -14,6 +14,15 @@ const generateFilm = () => {
   totalCommentsCount += filmCommentsCount;
   const alreadyWatched = Boolean(getRandomInteger(0, 1));
 
+  const getDate = () => {
+    const date = new Date();
+    date.setFullYear(
+      date.getFullYear() - getRandomInteger(1, 20)
+    );
+
+    return date.toISOString();
+  };
+
   return ({
     id: nanoid(),
     comments: (hasComments)
@@ -30,7 +39,7 @@ const generateFilm = () => {
       writers: writers.slice(0, getRandomInteger(1, writers.length)),
       actors: actors.slice(0, getRandomInteger(1, actors.length)),
       release: {
-        date: new Date(2021, 0, 1),
+        date: getDate(),
         releaseCountry: getRandomValue(countries)
       },
       runtime: getRandomInteger(Runtime.MIN, Runtime.MAX),

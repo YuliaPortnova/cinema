@@ -21,10 +21,17 @@ const UserStatusTitle = {
   MOVIE_BUFF: 'movie buff',
 };
 
+const SortType = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating',
+}
+
 export {
   FILMS_COUNT_PER_STEP,
   FilterType,
   FILTER_TYPE_ALL_NAME,
   UserStatusValue,
-  UserStatusTitle
+  UserStatusTitle,
+  SortType
 };
