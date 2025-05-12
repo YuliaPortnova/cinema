@@ -1,11 +1,10 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { createFilmDetailsInfoTemplate } from './film-details-info-template.js';
 import { createFilmDetailsControlsTemplate } from './film-details-controls-template.js';
 import { createFilmDetailsCommentsTemplate } from './film-details-comments-template.js';
 import { createFilmDetailsFormTemplate } from './film-details-form-template.js';
 
-const createFilmDetailsTemplate = (film, comments) => {
-  const { filmInfo, userDetails } = film;
+const createFilmDetailsTemplate = ({filmInfo, userDetails, comments, checkedEmotion, comment}) => {
   const { poster } = filmInfo;
 
   return (
@@ -34,7 +33,7 @@ const createFilmDetailsTemplate = (film, comments) => {
 
             ${createFilmDetailsCommentsTemplate(comments)}
 
-            ${createFilmDetailsFormTemplate()}
+            ${createFilmDetailsFormTemplate(checkedEmotion, comment)}
           </section>
         </div>
       </form>
@@ -42,18 +41,16 @@ const createFilmDetailsTemplate = (film, comments) => {
   );
 };
 
-export default class FilmDetailsView extends AbstractView {
-  #film = null;
+export default class FilmDetailsView extends AbstractStatefulView {
   #comments = null;
 
   constructor (film, comments) {
     super();
-    this.#film = film;
-    this.#comments = comments;
+    this._state = FilmDetailsView.transformFilmToState(film, comments);
   }
 
   get template() {
-    return createFilmDetailsTemplate(this.#film, this.#comments);
+    return createFilmDetailsTemplate(this._state);
   }
 
   setCloseButtonClickHandler(callback) {
@@ -101,4 +98,18 @@ export default class FilmDetailsView extends AbstractView {
     evt.preventDefault();
     this._callback.favoriteBtnClick();
   };
+
+  static transformFilmToState = (
+    film,
+    comments,
+    checkedEmotion = null,
+    comment = null,
+    scrollPosition = 0
+  ) => ({
+    ...film,
+    comments,
+    checkedEmotion,
+    comment,
+    scrollPosition
+  });
 }

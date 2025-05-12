@@ -1,5 +1,7 @@
 const FILMS_COUNT_PER_STEP = 5;
 
+const EMOTIONS = ['smile', 'sleeping', 'puke', 'angry'];
+
 const FilterType = {
   ALL: 'all',
   WATCHLIST: 'watchlist',
@@ -29,6 +31,7 @@ const SortType = {
 
 export {
   FILMS_COUNT_PER_STEP,
+  EMOTIONS,
   FilterType,
   FILTER_TYPE_ALL_NAME,
   UserStatusValue,
