@@ -5,7 +5,7 @@ import { createFilmDetailsCommentsTemplate } from './film-details-comments-templ
 import { createFilmDetailsFormTemplate } from './film-details-form-template.js';
 
 const createFilmDetailsTemplate = ({filmInfo, userDetails, comments, checkedEmotion, comment}) => {
-  const { poster } = filmInfo;
+  const { poster, ageRating } = filmInfo;
 
   return (
     `<section class="film-details">
@@ -18,7 +18,7 @@ const createFilmDetailsTemplate = ({filmInfo, userDetails, comments, checkedEmot
             <div class="film-details__poster">
               <img class="film-details__poster-img" src=${poster} alt="">
 
-              <p class="film-details__age">18+</p>
+              <p class="film-details__age">${ageRating}+</p>
             </div>
 
             ${createFilmDetailsInfoTemplate(filmInfo)}
@@ -42,16 +42,35 @@ const createFilmDetailsTemplate = ({filmInfo, userDetails, comments, checkedEmot
 };
 
 export default class FilmDetailsView extends AbstractStatefulView {
-  #comments = null;
-
-  constructor (film, comments) {
+  constructor (film, comments, viewData, updateViewData) {
     super();
-    this._state = FilmDetailsView.transformFilmToState(film, comments);
+    this._state = FilmDetailsView.transformFilmToState(
+      film,
+      comments,
+      viewData.emotion,
+      viewData.comment,
+      viewData.scrollPosition
+    );
+    this.updateViewData = updateViewData;
+    this.#setInnerHandlers();
   }
 
   get template() {
     return createFilmDetailsTemplate(this._state);
   }
+
+  _restoreHandlers = () => {
+    this.setScrollPosition();
+    this.#setInnerHandlers();
+    this.setCloseButtonClickHandler(this._callback.closeButtonClick);
+    this.setWatchlistBtnClickHandler(this._callback.watchlistBtnClick);
+    this.setWatchedBtnClickHandler(this._callback.watchedBtnClick);
+    this.setFavoriteBtnClickHandler(this._callback.favoriteBtnClick);
+  };
+
+  setScrollPosition = () => {
+    this.element.scrollTop = this._state.scrollPosition;
+  };
 
   setCloseButtonClickHandler(callback) {
     this._callback.closeButtonClick = callback;
@@ -86,16 +105,19 @@ export default class FilmDetailsView extends AbstractStatefulView {
 
   #watchlistBtnClickHandler = (evt) => {
     evt.preventDefault();
+    this.#updateViewData();
     this._callback.watchlistBtnClick();
   };
 
   #watchedBtnClickHandler = (evt) => {
     evt.preventDefault();
+    this.#updateViewData();
     this._callback.watchedBtnClick();
   };
 
   #favoriteBtnClickHandler = (evt) => {
     evt.preventDefault();
+    this.#updateViewData();
     this._callback.favoriteBtnClick();
   };
 
@@ -112,4 +134,36 @@ export default class FilmDetailsView extends AbstractStatefulView {
     comment,
     scrollPosition
   });
+
+  #emotionClickHandler = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      checkedEmotion: evt.currentTarget.dataset.emotionType,
+      scrollPosition: this.element.scrollTop
+    });
+  };
+
+  #commentInputChangeHandler = (evt) => {
+    evt.preventDefault();
+    this._setState({comment: evt.target.value});
+  };
+
+  #updateViewData = () => {
+    this.updateViewData({
+      emotion: this._state.checkedEmotion,
+      comment: this._state.comment,
+      scrollPosition: this.element.scrollTop
+    });
+  };
+
+  #setInnerHandlers = () => {
+    this.element
+      .querySelectorAll('.film-details__emoji-label')
+      .forEach((element) => {
+        element.addEventListener('click', this.#emotionClickHandler);
+      });
+    this.element
+      .querySelector('.film-details__comment-input')
+      .addEventListener('input', this.#commentInputChangeHandler);
+  };
 }
