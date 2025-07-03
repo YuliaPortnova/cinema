@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {FILTER_TYPE_ALL_NAME, FilterType} from '../const.js';
 
-const createFilterItemTemplate = ({name, count}, isActive) => {
+const createFilterItemTemplate = ({name, count}, currentFilter) => {
   const getFilterName = (filterName) =>
     (filterName === FilterType.ALL)
       ? FILTER_TYPE_ALL_NAME
@@ -16,7 +16,7 @@ const createFilterItemTemplate = ({name, count}, isActive) => {
     <a
       href="#${name}"
       class="main-navigation__item"
-      ${isActive ? 'main-navigation__item--active' : ''}
+      ${(name === currentFilter) ? 'main-navigation__item--active' : ''}
     >
       ${getFilterName(name)}
       ${getCount(name)}
@@ -25,9 +25,9 @@ const createFilterItemTemplate = ({name, count}, isActive) => {
 };
 
 
-const createFilterTemplate = (filters) => {
+const createFilterTemplate = (filters, currentFilter) => {
   const filterItems = filters
-    .map((filter, index) => createFilterItemTemplate(filter, index === 0))
+    .map((filter, index) => createFilterItemTemplate(filter, currentFilter))
     .join('');
 
   return `
@@ -38,13 +38,30 @@ const createFilterTemplate = (filters) => {
 };
 export default class FilterView extends AbstractView {
   #filters = null;
+  #currentFilter = null;
 
-  constructor (filters) {
+  constructor (filters, currentFilter) {
     super();
     this.#filters = filters;
+    this.#currentFilter = currentFilter;
   }
 
   get template() {
-    return createFilterTemplate(this.#filters);
+    return createFilterTemplate(this.#filters, this.#currentFilter);
   }
+
+  setFilterTypeClickHandler(callback) {
+    this._callback.filterTypeClick = callback;
+    this.element
+      .addEventListener('click', this.#filterTypeClickHandler);
+  }
+
+  #filterTypeClickHandler = (evt) => {
+    if (evt.target.tagName !== 'A') {
+      return;
+    }
+
+    evt.preventDefault();
+    this._callback.filterTypeClick(evt.target.dataset.filterType);
+  };
 }

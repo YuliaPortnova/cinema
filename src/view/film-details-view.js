@@ -66,6 +66,11 @@ export default class FilmDetailsView extends AbstractStatefulView {
     this.setWatchlistBtnClickHandler(this._callback.watchlistBtnClick);
     this.setWatchedBtnClickHandler(this._callback.watchedBtnClick);
     this.setFavoriteBtnClickHandler(this._callback.favoriteBtnClick);
+    this.setCommentDeleteClickHandler(this._callback.commentDeleteClick);
+  };
+
+  setCommentData = () => {
+    this.#updateViewData();
   };
 
   setScrollPosition = () => {
@@ -96,6 +101,18 @@ export default class FilmDetailsView extends AbstractStatefulView {
     this.element
       .querySelector('.film-details__control-button--favorite')
       .addEventListener('click', this.#favoriteBtnClickHandler);
+  }
+
+  setCommentDeleteClickHandler(callback) {
+    const commentDeleteElements = this.element.querySelectorAll('.film-details__comment-delete');
+
+    if (commentDeleteElements) {
+      this._callback.commentDeleteClick = callback;
+      commentDeleteElements.forEach(
+        (element) =>
+          element.addEventListener('click', this.#commentDeleteClickHandler)
+      );
+    }
   }
 
   #closeButtonClickHandler = (evt) => {
@@ -146,6 +163,12 @@ export default class FilmDetailsView extends AbstractStatefulView {
   #commentInputChangeHandler = (evt) => {
     evt.preventDefault();
     this._setState({comment: evt.target.value});
+  };
+
+  #commentDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#updateViewData();
+    this._callback.commentDeleteClick(evt.target.dataset.commnetId);
   };
 
   #updateViewData = () => {
