@@ -27,7 +27,7 @@ const createFilterItemTemplate = ({name, count}, currentFilter) => {
 
 const createFilterTemplate = (filters, currentFilter) => {
   const filterItems = filters
-    .map((filter, index) => createFilterItemTemplate(filter, currentFilter))
+    .map((filter) => createFilterItemTemplate(filter, currentFilter))
     .join('');
 
   return `

@@ -41,11 +41,11 @@ export default class FilterPresenter {
         name: FilterType.FAVORITES,
         count: filter[FilterType.FAVORITES](films).length
       }
-    ]
+    ];
   }
 
   init() {
-    this.#currentFilter = this.#filterModel.filter;
+    this.#currentFilter = this.#filterModel.get();
 
     const filters = this.filters;
 
@@ -68,7 +68,7 @@ export default class FilterPresenter {
   };
 
   #filterTypeChangeHandler = (filterType) => {
-    if (this.#filterModel.filter === filterType) {
+    if (this.#filterModel.get === filterType) {
       return;
     }
 
