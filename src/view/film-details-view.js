@@ -9,7 +9,7 @@ const createFilmDetailsTemplate = ({filmInfo, userDetails, comments, checkedEmot
 
   return (
     `<section class="film-details">
-      <form class="film-details__inner" action="" method="get">
+      <class="film-details__inner">
         <div class="film-details__top-container">
           <div class="film-details__close">
             <button class="film-details__close-btn" type="button">close</button>
@@ -138,20 +138,6 @@ export default class FilmDetailsView extends AbstractStatefulView {
     this._callback.favoriteBtnClick();
   };
 
-  static transformFilmToState = (
-    film,
-    comments,
-    checkedEmotion = null,
-    comment = null,
-    scrollPosition = 0
-  ) => ({
-    ...film,
-    comments,
-    checkedEmotion,
-    comment,
-    scrollPosition
-  });
-
   #emotionClickHandler = (evt) => {
     evt.preventDefault();
     this.updateElement({
@@ -168,7 +154,8 @@ export default class FilmDetailsView extends AbstractStatefulView {
   #commentDeleteClickHandler = (evt) => {
     evt.preventDefault();
     this.#updateViewData();
-    this._callback.commentDeleteClick(evt.target.dataset.commnetId);
+    this._callback.commentDeleteClick(evt.target.dataset.commentId);
+
   };
 
   #updateViewData = () => {
@@ -189,4 +176,18 @@ export default class FilmDetailsView extends AbstractStatefulView {
       .querySelector('.film-details__comment-input')
       .addEventListener('input', this.#commentInputChangeHandler);
   };
+
+  static transformFilmToState = (
+    film,
+    comments,
+    checkedEmotion = null,
+    comment = null,
+    scrollPosition = 0
+  ) => ({
+    ...film,
+    comments,
+    checkedEmotion,
+    comment,
+    scrollPosition
+  });
 }

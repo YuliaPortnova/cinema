@@ -15,8 +15,11 @@ const createFilterItemTemplate = ({name, count}, currentFilter) => {
   return `
     <a
       href="#${name}"
-      class="main-navigation__item"
+      class="
+      main-navigation__item
       ${(name === currentFilter) ? 'main-navigation__item--active' : ''}
+      "
+      data-filter-type=${name}
     >
       ${getFilterName(name)}
       ${getCount(name)}

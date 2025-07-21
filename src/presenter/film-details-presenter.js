@@ -84,7 +84,7 @@ export default class FilmDetailsPresenter {
 
       const createdComment = {
         id: newCommentId,
-        author: 'Olof',
+        author: 'Yulia',
         date: new Date(),
         emotion,
         comment

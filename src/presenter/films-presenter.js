@@ -139,6 +139,8 @@ export default class FilmsPresenter {
   };
 
   #removeFilmDetailsComponent = () => {
+    document.removeEventListener('keydown', this.#ctrlEnterDownHandler);
+
     this.#filmDetailsPresenter.destroy();
     this.#filmDetailsPresenter = null;
     this.#selectedFilm = null;
@@ -154,6 +156,13 @@ export default class FilmsPresenter {
     }
   };
 
+  #ctrlEnterDownHandler = (evt) => {
+    if (evt.key === 'Enter' && (evt.metaKey || evt.ctrlKey)) {
+      evt.preventDefault();
+      this.#filmDetailsPresenter.createComment();
+    }
+  }
+
   #renderFilmDetails() {
     const comments = [...this.#commentsModel.get(this.#selectedFilm)];
 
@@ -165,6 +174,8 @@ export default class FilmsPresenter {
         this.#escKeyDownHandler
       );
     }
+
+    document.addEventListener('keydown', this.#ctrlEnterDownHandler);
 
     this.#filmDetailsPresenter.init(this.#selectedFilm, comments);
   }
