@@ -161,7 +161,7 @@ export default class FilmsPresenter {
       evt.preventDefault();
       this.#filmDetailsPresenter.createComment();
     }
-  }
+  };
 
   #renderFilmDetails() {
     const comments = [...this.#commentsModel.get(this.#selectedFilm)];
@@ -193,7 +193,7 @@ export default class FilmsPresenter {
     if (this.#renderedFilmsCount >= this.films.length) {
       remove(this.#filmButtonMoreComponent);
     }
-  };
+  }
 
   #sortTypeChangeHandle = (sortType) => {
     if (this.#currentSortType === sortType) {
