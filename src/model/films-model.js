@@ -2,7 +2,17 @@ import Observable from '../framework/observable.js';
 import { generateFilms } from '../mock/film.js';
 
 export default class FilmsModel extends Observable {
+  #filmsApiService = null;
   #films = generateFilms();
+
+  constructor(filmsApiService) {
+    super();
+    this.#filmsApiService = filmsApiService;
+
+    this.#filmsApiService.films.then((films) => {
+      console.log(films);
+    });
+  }
 
   get films () {
     return this.#films;
