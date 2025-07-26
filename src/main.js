@@ -35,3 +35,4 @@ render(new FooterStatisticsView(filmsCount), footerStatisticsElement);
 
 filterPresenter.init();
 filmsPresenter.init();
+filmsModel.init();

@@ -1,22 +1,25 @@
 import Observable from '../framework/observable.js';
-import { generateFilms } from '../mock/film.js';
-
 export default class FilmsModel extends Observable {
   #filmsApiService = null;
-  #films = generateFilms();
+  #films = [];
 
   constructor(filmsApiService) {
     super();
     this.#filmsApiService = filmsApiService;
-
-    this.#filmsApiService.films.then((films) => {
-      console.log(films.map(this.#adaptToClient));
-    });
   }
 
   get films () {
     return this.#films;
   }
+
+  init = async () => {
+    try {
+      const films = await this.#filmsApiService.films;
+      this.#films = films.map(this.#adaptToClient);
+    } catch(err) {
+      this.#films = [];
+    }
+  };
 
   update = (updateType, update) => {
     const index = this.#films.findIndex((film) => film.id === update.id);
