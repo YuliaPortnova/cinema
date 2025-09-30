@@ -163,8 +163,10 @@ export default class FilmsPresenter {
     }
   };
 
-  #renderFilmDetails() {
-    const comments = [...this.#commentsModel.get(this.#selectedFilm)];
+  #renderFilmDetails = async () => {
+    const comments = await this.#commentsModel.get(this.#selectedFilm);
+
+    const isCommentLoadingError = !comments;
 
     if(!this.#filmDetailsPresenter) {
       this.#filmDetailsPresenter = new FilmDetailsPresenter(
@@ -175,10 +177,12 @@ export default class FilmsPresenter {
       );
     }
 
-    document.addEventListener('keydown', this.#ctrlEnterDownHandler);
+    if (!isCommentLoadingError) {
+      document.addEventListener('keydown', this.#ctrlEnterDownHandler);
+    }
 
-    this.#filmDetailsPresenter.init(this.#selectedFilm, comments);
-  }
+    this.#filmDetailsPresenter.init(this.#selectedFilm, comments, isCommentLoadingError);
+  };
 
   #filmButtonMoreClickHandler () {
     const filmsCount = this.films.length;
