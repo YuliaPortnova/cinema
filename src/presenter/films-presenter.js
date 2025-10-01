@@ -4,6 +4,7 @@ import FilmsListView from '../view/films-list-view.js';
 import FilmsView from '../view/films-view.js';
 import SortView from '../view/sort-view.js';
 import FilmsListEmptyView from '../view/films-list-empty.js';
+import FilmsListLoadingView from '../view/films-list-loading-view.js';
 
 import FilmPresenter from './film-presenter.js';
 import FilmDetailsPresenter from './film-details-presenter.js';
@@ -20,6 +21,7 @@ export default class FilmsPresenter {
   #filmsListComponent = new FilmsListView();
   #filmsComponent = new FilmsView();
   #filmsListEmptyComponent = new FilmsListEmptyView();
+  #filmsListLoadingComponent = new FilmsListLoadingView();
 
   #container = null;
   #filmsModel = null;
@@ -33,6 +35,7 @@ export default class FilmsPresenter {
   #currentSortType = SortType.DEFAULT;
   #renderedFilmsCount = FILMS_COUNT_PER_STEP;
   #filterType = FilterType.ALL;
+  #isLoading = true;
 
   constructor(container, filmsModel, commentsModel, filterModel) {
     this.#container = container;
@@ -100,6 +103,11 @@ export default class FilmsPresenter {
         break;
       case UpdateType.MAJOR:
         this.#clearFilmBoard({resetRenderedFilmsCount: true, resetSortType: true});
+        this.#renderFilmBoard();
+        break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#filmsListLoadingComponent);
         this.#renderFilmBoard();
         break;
     }
@@ -258,7 +266,12 @@ export default class FilmsPresenter {
   #renderFilmBoard () {
     const films = this.films.slice(0, Math.min(this.films.length, FILMS_COUNT_PER_STEP));
 
-    if (this.films.length === 0) {
+    if (this.#isLoading) {
+      render(this.#filmsListLoadingComponent, this.#container);
+      return;
+    }
+
+    if (!this.#isLoading && this.films.length === 0) {
       this.#filmsListEmptyComponent = new FilmsListEmptyView(this.#filterType);
       render(this.#filmsListEmptyComponent, this.#container);
       return;
