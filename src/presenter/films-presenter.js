@@ -9,11 +9,16 @@ import FilmsListLoadingView from '../view/films-list-loading-view.js';
 import FilmPresenter from './film-presenter.js';
 import FilmDetailsPresenter from './film-details-presenter.js';
 
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import { render, remove, replace } from '../framework/render.js';
 import { sortFilmsByRating, sortFilmsByDate } from '../utils/film.js';
 import {FILMS_COUNT_PER_STEP, SortType, UserAction, UpdateType, FilterType} from '../const.js';
 import {filter} from '../utils/filter.js';
 
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+}
 export default class FilmsPresenter {
   #sortComponent = null;
   #filmButtonMoreComponent = new FilmButtonMoreView();
@@ -36,6 +41,8 @@ export default class FilmsPresenter {
   #renderedFilmsCount = FILMS_COUNT_PER_STEP;
   #filterType = FilterType.ALL;
   #isLoading = true;
+
+  #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
 
   constructor(container, filmsModel, commentsModel, filterModel) {
     this.#container = container;
@@ -67,20 +74,31 @@ export default class FilmsPresenter {
   }
 
   #viewActionHandler = (actionType, updateType, updateFilm, updateComment) => {
+    this.#uiBlocker.block();
+
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-        this.#filmsModel.update(updateType, updateFilm);
+        if (
+          this.#filmPresenter.get(updateFilm.id) && !this.#filmDetailsPresenter
+        ) {
+          this.#filmPresenter.get(updateFilm.id).setFilmEditing();
+        }
+
+
+        this.#filmsModel.updateOnServer(updateType, updateFilm);
         break;
       case UserAction.ADD_COMMENT:
         this.#commentsModel.add(updateType, updateComment);
         this.#filmDetailsPresenter.clearViewData();
-        this.#filmsModel.update(updateType, updateFilm);
+        this.#filmsModel.updateOnServer(updateType, updateFilm);
         break;
       case UserAction.DELETE_COMMENT:
-        this.#commentsModel.delete(updateType, updateComment);
-        this.#filmsModel.update(updateType, updateFilm);
+        this.#commentsModel.delete(updateType, updateFilm, updateComment);
+        // this.#filmsModel.updateOnServer(updateType, updateFilm);
         break;
     }
+
+    this.#uiBlocker.unblock();
   };
 
   #modelEventHandler = (updateType, data) => {

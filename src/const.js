@@ -42,6 +42,12 @@ const UpdateType = {
   INIT: 'INIT',
 };
 
+const Method = {
+  PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE'
+};
+
 export {
   FILMS_COUNT_PER_STEP,
   EMOTIONS,
@@ -51,5 +57,6 @@ export {
   UserStatusTitle,
   SortType,
   UserAction,
-  UpdateType
+  UpdateType,
+  Method
 };

@@ -1,32 +1,42 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { createFilmCardInfoTemplate } from './film-card-info-template.js';
 import { createFilmCardControlsTemplate } from './film-card-controls-template.js';
 
 const createFilmCardTemplate = (film) => {
-  const {filmInfo, comments, userDetails} = film;
+  const {filmInfo, comments, userDetails, isFilmEditing} = film;
   return (
     `<article class="film-card">
       ${createFilmCardInfoTemplate(filmInfo, comments)}
-      ${createFilmCardControlsTemplate(userDetails)}
+      ${createFilmCardControlsTemplate(userDetails, isFilmEditing)}
     </article>`
   );
 };
 
-export default class FilmCardView extends AbstractView {
-  #film = null;
-
+export default class FilmCardView extends AbstractStatefulView {
   constructor(film) {
     super();
-    this.#film = film;
+    this._state = FilmCardView.parseFilmToState(film);
   }
 
   get template() {
-    return createFilmCardTemplate(this.#film);
+    return createFilmCardTemplate(this._state);
   }
+
+  shakeControls = () => {
+    const controlsElement = this.element.querySelector('.film-card__controls');
+    this.shake.call({element: controlsElement});
+  };
+
+  _restoreHandlers = () => {
+    this.setCardClickHandler(this._callback.cardClick);
+    this.setWatchlistBtnClickHandler(this._callback.watchlistBtnClick);
+    this.setWatchedBtnClickHandler(this._callback.watchedBtnClick);
+    this.setFavoriteBtnClickHandler(this._callback.favoriteBtnClick);
+  };
 
   setCardClickHandler(callback) {
     this._callback.cardClick = callback;
-    this.element.querySelector('a').addEventListener('click', this.#cardClickHandler)
+    this.element.querySelector('a').addEventListener('click', this.#cardClickHandler);
   }
 
   setWatchlistBtnClickHandler(callback) {
@@ -69,4 +79,9 @@ export default class FilmCardView extends AbstractView {
     evt.preventDefault();
     this._callback.favoriteBtnClick();
   };
+
+  static parseFilmToState = (film) => ({
+    ...film,
+    isFilmEditing: false
+  });
 }

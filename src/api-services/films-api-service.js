@@ -1,9 +1,5 @@
 import ApiService from '../framework/api-service.js';
-
-const Method = {
-  GET: 'GET',
-  PUT: 'PUT',
-};
+import { Method } from '../const.js';
 
 export default class FilmsApiService extends ApiService {
   get films() {
@@ -24,19 +20,19 @@ export default class FilmsApiService extends ApiService {
     return parsedResponse;
   };
 
-  #adaptToServer = (film) => {
+  #adaptToServer(film) {
     const adaptedFilm = {
       ...film,
       ['film_info']: {
         ...film.filmInfo,
         ['alternative_title']: film.filmInfo.alternativeTitle,
         ['total_rating']: film.filmInfo.totalRating,
-        ['age_rating']: film.filmInfo.ageRating,
+        ['age_rating']: film.filmInfo.ageRating
       },
       ['user_details']: {
         ...film.userDetails,
-        ['already-watched']: film.userDetails.alreadyWatched,
-        ['watching_date']: film.userDetails.watchingDate,
+        ['already_watched']: film.userDetails.alreadyWatched,
+        ['watching_date']: film.userDetails.watchingDate
       }
     };
 
@@ -49,5 +45,5 @@ export default class FilmsApiService extends ApiService {
     delete adaptedFilm['user_details'].watchingDate;
 
     return adaptedFilm;
-  };
+  }
 }

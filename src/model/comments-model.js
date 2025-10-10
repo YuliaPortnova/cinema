@@ -3,10 +3,12 @@ import Observable from '../framework/observable.js';
 export default class CommentsModel extends Observable {
   #comments = [];
   #apiService = null;
+  #filmsModel = null;
 
-  constructor(apiService) {
+  constructor(apiService, filmsModel) {
     super();
     this.#apiService = apiService;
+    this.#filmsModel = filmsModel;
   }
 
   get = async (film) => {
@@ -14,25 +16,49 @@ export default class CommentsModel extends Observable {
     return this.#comments;
   };
 
-  add = (updateType, update) => {
-    this.#comments.push(update);
-    this._notify(updateType, update);
+  add = async (updateType, film, createdComment) => {
+    try {
+      const response = await this.#apiService.add(film, createdComment);
+
+      this.#comments = response.comments;
+
+      this.#filmsModel.updateOnClient({
+        updateType,
+        update: response.movie,
+        isAdapted: false
+      });
+    } catch {
+      throw new Error('Can\'t add comment');
+    }
   };
 
-  delete = (updateType, update) => {
+  delete = async (updateType, film, deletedComment) => {
     const index = this.#comments.findIndex(
-      (comment) => comment.id === update.id
+      (comment) => comment.id === deletedComment.id
     );
 
     if (index === -1) {
       throw new ErrorEvent('Can\'t delete unexisting comment');
     }
 
-    this.#comments = [
-      ...this.#comments.slice(0, index),
-      ...this.#comments.slice(index + 1),
-    ];
+    try {
+      await this.#apiService.delete(deletedComment);
 
-    this._notify(updateType);
+      const updateFilm = {
+        ...film,
+        comments: [
+          ...film.comments.slice(0, index),
+          ...film.comment.slice(index + 1)
+        ]
+      };
+
+      this.#filmsModel.updateOnClient({
+        updateType,
+        update: updateFilm,
+        isAdapted: true
+      });
+    } catch {
+      throw new Error('Can\'t delete comment');
+    }
   };
 }
