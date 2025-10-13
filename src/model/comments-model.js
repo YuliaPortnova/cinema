@@ -48,7 +48,7 @@ export default class CommentsModel extends Observable {
         ...film,
         comments: [
           ...film.comments.slice(0, index),
-          ...film.comment.slice(index + 1)
+          ...film.comments.slice(index + 1)
         ]
       };
 

@@ -80,7 +80,7 @@ export default class FilmDetailsView extends AbstractStatefulView {
   shakeControls = () => {
     const controlsElement = this.element.querySelector('.film-details_controls');
     this.shake.call({element: controlsElement});
-  }
+  };
 
   _restoreHandlers = () => {
     this.setScrollPosition();

@@ -24,7 +24,7 @@ const commentsModel = new CommentsModel(new CommentsApiService(END_POINT, AUTHOR
 const filterModel = new FilterModel();
 
 const headerProfilePresenter = new HeaderProfilePresenter(siteHeaderElement, filmsModel);
-const footerStatisticsPresenter = new FooterStatisticsPresenter(footerStatisticsElement, filmsModel)
+const footerStatisticsPresenter = new FooterStatisticsPresenter(footerStatisticsElement, filmsModel);
 const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, commentsModel, filterModel);
 const filterPresenter = new FilterPresenter(siteMainElement, filmsModel, filterModel);
 
