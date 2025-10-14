@@ -10,10 +10,6 @@ export default class FilmsModel extends Observable {
     this.#filmsApiService = filmsApiService;
   }
 
-  get films () {
-    return this.#films;
-  }
-
   init = async () => {
     try {
       const films = await this.#filmsApiService.films;
@@ -24,6 +20,10 @@ export default class FilmsModel extends Observable {
 
     this._notify(UpdateType.INIT);
   };
+
+  get films () {
+    return this.#films;
+  }
 
   updateOnClient = async ({updateType, update, isAdapted}) => {
     const index = this.#films.findIndex((film) => film.id === update.id);
