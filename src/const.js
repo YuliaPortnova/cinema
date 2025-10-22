@@ -48,6 +48,11 @@ const Method = {
   DELETE: 'DELETE'
 };
 
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
+
 export {
   FILMS_COUNT_PER_STEP,
   EMOTIONS,
@@ -58,5 +63,6 @@ export {
   SortType,
   UserAction,
   UpdateType,
-  Method
+  Method,
+  TimeLimit
 };
