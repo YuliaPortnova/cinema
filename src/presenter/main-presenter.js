@@ -1,4 +1,5 @@
 import FilmsPresenter from './films-presenter.js';
+import FilmsExtraRatePresenter from './films-extra-rate-presenter.js';
 import FilmsExtraCommentPresenter from './films-extra-comment-presenter.js';
 import FilmDetailsPresenter from './film-details-presenter.js';
 
@@ -20,6 +21,7 @@ export default class MainPresenter {
   #filterModel = null;
 
   #filmsPresenter = null;
+  #filmsExtraRatePresenter = null;
   #filmsExtraCommentPresenter = null;
   #filmDetailsPresenter = null;
 
@@ -179,6 +181,14 @@ export default class MainPresenter {
       this.#escKeyDownHandler
     );
     this.#filmsPresenter.init();
+
+    this.#filmsExtraRatePresenter = new FilmsExtraRatePresenter(
+      this.#filmsPresenter.getFilmsContainer(),
+      this.#filmsModel,
+      this.#addFilmDetailsComponent,
+      this.#escKeyDownHandler
+    );
+    this.#filmsExtraRatePresenter.init();
 
     this.#filmsExtraCommentPresenter = new FilmsExtraCommentPresenter(
       this.#filmsPresenter.getFilmsContainer(),

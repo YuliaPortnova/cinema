@@ -5,16 +5,15 @@ import FilmPresenter from './film-presenter.js';
 
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import {render} from '../framework/render.js';
-import {sortFilmsByCommentCount} from '../utils/film.js';
-import { UserAction, UpdateType, TimeLimit, ExtraFilmListType, FILM_EXTRA_COUNT } from '../const';
+import {sortFilmsByRating} from '../utils/film.js';
+import {UserAction, UpdateType, TimeLimit, ExtraFilmListType, FILM_EXTRA_COUNT} from '../const';
 
-export default class FilmsExtraCommentPresenter {
-  #filmExtraCommentComponent = new FilmsListExtraView(ExtraFilmListType.COMMENT);
+export default class FilmsExtraRatePresenter {
+  #filmExtraRateComponent = new FilmsListExtraView(ExtraFilmListType.RATING);
   #filmsListContainerComponent = new FilmsListContainerView();
 
   #container = null;
   #filmsModel = null;
-  #commentsModel = null;
 
   #filmPresenter = new Map();
   #filmCardClickHandler = null;
@@ -22,26 +21,24 @@ export default class FilmsExtraCommentPresenter {
 
   #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
 
-  constructor(container, filmsModel, commentsModel, filmCardClickHandler, escKeyDownHandler) {
+  constructor(container, filmsModel, filmCardClickHandler, escKeyDownHandler) {
     this.#container = container;
     this.#filmsModel = filmsModel;
-    this.#commentsModel = commentsModel;
     this.#filmCardClickHandler = filmCardClickHandler;
     this.#escKeyDownHandler = escKeyDownHandler;
 
     this.#filmsModel.addObserver(this.#modelEventHandler);
-    this.#commentsModel.addObserver(this.#modelEventHandler);
   }
 
   get films() {
     return [...this.#filmsModel.films]
-      .sort(sortFilmsByCommentCount)
+      .sort(sortFilmsByRating)
       .slice(0, FILM_EXTRA_COUNT);
   }
 
 
   init = () => {
-    this.#renderExtraCommentBoard();
+    this.#renderExtraRateBoard();
   };
 
   #viewActionHandler = async (actionType, updateType, updateFilm) => {
@@ -72,18 +69,12 @@ export default class FilmsExtraCommentPresenter {
           this.#filmPresenter.get(data.id).init(data);
         }
         break;
-      case UpdateType.EXTRA:
-        this.#filmPresenter.forEach(((presenter) => presenter.destroy()));
-        this.#filmPresenter.clear();
-
-        this.#renderFilmsList(this.films);
-        break;
     }
   };
 
   #renderFilmsListContainer(container) {
-    render(this.#filmExtraCommentComponent, container);
-    render(this.#filmsListContainerComponent, this.#filmExtraCommentComponent.element);
+    render(this.#filmExtraRateComponent, container);
+    render(this.#filmsListContainerComponent, this.#filmExtraRateComponent.element);
   }
 
   #renderFilmsList(films) {
@@ -111,7 +102,7 @@ export default class FilmsExtraCommentPresenter {
     this.#filmPresenter.set(film.id, filmPresenter);
   }
 
-  #renderExtraCommentBoard() {
+  #renderExtraRateBoard() {
     const films = this.films;
 
     if (films.length > 0) {
