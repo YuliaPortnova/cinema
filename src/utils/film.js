@@ -24,4 +24,16 @@ const sortFilmsByDate = (filmA, filmB) =>
 const sortFilmsByRating = (filmA, filmB) =>
   filmB.filmInfo.totalRating - filmA.filmInfo.totalRating;
 
-export {humanizeDate, formatStringToDate, formatMinutesToTime, formatStringToDateWithTime, formatStringToYear, sortFilmsByDate, sortFilmsByRating};
+const sortFilmsByCommentCount = (filmA, filmB) =>
+  filmB.comments.length - filmA.comments.length;
+
+export {
+  humanizeDate,
+  formatStringToDate,
+  formatMinutesToTime,
+  formatStringToDateWithTime,
+  formatStringToYear,
+  sortFilmsByDate,
+  sortFilmsByRating,
+  sortFilmsByCommentCount
+};

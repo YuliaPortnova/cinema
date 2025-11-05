@@ -1,5 +1,7 @@
 const FILMS_COUNT_PER_STEP = 5;
 
+const FILM_EXTRA_COUNT = 2;
+
 const EMOTIONS = ['smile', 'sleeping', 'puke', 'angry'];
 
 const FilterType = {
@@ -39,6 +41,7 @@ const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  EXTRA: 'EXTRA',
   INIT: 'INIT',
 };
 
@@ -53,8 +56,14 @@ const TimeLimit = {
   UPPER_LIMIT: 1000,
 };
 
+const ExtraFilmListType = {
+  RATING: 'rating',
+  COMMENT: 'comment'
+};
+
 export {
   FILMS_COUNT_PER_STEP,
+  FILM_EXTRA_COUNT,
   EMOTIONS,
   FilterType,
   FILTER_TYPE_ALL_NAME,
@@ -64,5 +73,6 @@ export {
   UserAction,
   UpdateType,
   Method,
-  TimeLimit
+  TimeLimit,
+  ExtraFilmListType
 };
