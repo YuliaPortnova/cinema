@@ -11,7 +11,7 @@ import FilmsApiService from './api-services/films-api-service.js';
 import CommentsApiService from './api-services/comments-api-service.js';
 
 const AUTHORIZATION = 'Basic yuliahsgfksyefgkesyf';
-const END_POINT = 'https://17.ecmascript.htmlacademy.pro/cinemaddict';
+const END_POINT = 'https://18.ecmascript.htmlacademy.pro/cinemaddict/';
 
 const bodyElement = document.querySelector('body');
 const siteHeaderElement = bodyElement.querySelector('.header');
