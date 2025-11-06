@@ -1,6 +1,7 @@
 const FILMS_COUNT_PER_STEP = 5;
 
 const FILM_EXTRA_COUNT = 2;
+const DESCRIPTION_LENGTH = 140;
 
 const EMOTIONS = ['smile', 'sleeping', 'puke', 'angry'];
 
@@ -64,6 +65,7 @@ const ExtraFilmListType = {
 export {
   FILMS_COUNT_PER_STEP,
   FILM_EXTRA_COUNT,
+  DESCRIPTION_LENGTH,
   EMOTIONS,
   FilterType,
   FILTER_TYPE_ALL_NAME,
