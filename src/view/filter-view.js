@@ -60,11 +60,11 @@ export default class FilterView extends AbstractView {
   }
 
   #filterTypeClickHandler = (evt) => {
-    if (evt.target.tagName !== 'A') {
+    if (evt.target.closest('A').tagName !== 'A') {
       return;
     }
 
     evt.preventDefault();
-    this._callback.filterTypeClick(evt.target.dataset.filterType);
+    this._callback.filterTypeClick(evt.target.closest('A').dataset.filterType);
   };
 }
