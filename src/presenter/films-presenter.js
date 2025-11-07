@@ -176,7 +176,7 @@ export default class FilmsPresenter {
       this.#filmsListContainerComponent
     );
 
-    if (this.films.length > FILMS_COUNT_PER_STEP) {
+    if (this.films.length > this.#renderedFilmsCount) {
       this.#renderFilmButtonMore(this.#filmsListComponent.element);
     }
   }
@@ -195,7 +195,7 @@ export default class FilmsPresenter {
   }
 
   #renderFilmBoard () {
-    const films = this.films.slice(0, Math.min(this.films.length, FILMS_COUNT_PER_STEP));
+    const films = this.films.slice(0, Math.min(this.films.length, this.#renderedFilmsCount));
 
     this.#renderSort(this.#container);
     this.#renderFilmListContainer(this.#container);
