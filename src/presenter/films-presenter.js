@@ -3,6 +3,7 @@ import FilmsListContainerView from '../view/films-list-container-view.js';
 import FilmsListView from '../view/films-list-view.js';
 import FilmsView from '../view/films-view.js';
 import SortView from '../view/sort-view.js';
+import FilmsListEmptyView from '../view/films-list-empty.js';
 
 import FilmPresenter from './film-presenter.js';
 
@@ -13,6 +14,7 @@ import {FILMS_COUNT_PER_STEP, SortType, UserAction, UpdateType, FilterType, Time
 import {filter} from '../utils/filter.js';
 export default class FilmsPresenter {
   #sortComponent = null;
+  #filmsListEmptyComponent = null;
   #filmButtonMoreComponent = new FilmButtonMoreView();
   #filmsListContainerComponent = new FilmsListContainerView();
   #filmsListComponent = new FilmsListView();
@@ -148,7 +150,7 @@ export default class FilmsPresenter {
     const films = this.films.slice(0, Math.min(this.films.length, FILMS_COUNT_PER_STEP));
     this.#clearFilmsList();
     this.#renderSort(this.#container);
-    this.#renderFilmList(films);
+    this.#renderFilmsList(films);
   };
 
   #renderSort = (container) => {
@@ -170,7 +172,7 @@ export default class FilmsPresenter {
     this.#filmButtonMoreComponent.setButtonClickHanler(() => this.#filmButtonMoreClickHandler());
   }
 
-  #renderFilmList(films) {
+  #renderFilmsList(films) {
     this.#renderFilms(
       films,
       this.#filmsListContainerComponent
@@ -188,7 +190,7 @@ export default class FilmsPresenter {
     remove(this.#filmButtonMoreComponent);
   };
 
-  #renderFilmListContainer(container) {
+  #renderFilmsListContainer(container) {
     render(this.#filmsComponent, container);
     render(this.#filmsListComponent, this.#filmsComponent.element, RenderPosition.BEFOREBEGIN);
     render(this.#filmsListContainerComponent, this.#filmsListComponent.element);
@@ -198,8 +200,21 @@ export default class FilmsPresenter {
     const films = this.films.slice(0, Math.min(this.films.length, this.#renderedFilmsCount));
 
     this.#renderSort(this.#container);
-    this.#renderFilmListContainer(this.#container);
-    this.#renderFilmList(films);
+    this.#renderFilmsListContainer(this.#container);
+
+    if (films.length === 0) {
+      if (this.#filmsListEmptyComponent) {
+        remove(this.#filmsListEmptyComponent);
+      }
+      this.#filmsListEmptyComponent = new FilmsListEmptyView(this.#filterModel.get());
+      replace(this.#filmsListEmptyComponent, this.#filmsListComponent);
+      return;
+    }
+
+    remove(this.#filmsListEmptyComponent);
+
+
+    this.#renderFilmsList(films);
   }
 
   #clearFilmBoard = ({resetRenderedFilmsCount = false, resetSortType = false} = {}) => {
