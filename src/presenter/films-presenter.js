@@ -146,7 +146,6 @@ export default class FilmsPresenter {
     }
 
     this.#currentSortType = sortType;
-
     const films = this.films.slice(0, Math.min(this.films.length, FILMS_COUNT_PER_STEP));
     this.#clearFilmsList();
     this.#renderSort(this.#container);
@@ -162,7 +161,9 @@ export default class FilmsPresenter {
       replace(updatedSortComponent, this.#sortComponent);
       this.#sortComponent = updatedSortComponent;
     }
-
+    if (this.films.length === 0) {
+      remove(this.#sortComponent);
+    }
     this.#sortComponent.setSortTypeChangeHandler(this.#sortTypeChangeHandle);
   };
 
