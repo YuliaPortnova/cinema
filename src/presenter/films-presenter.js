@@ -161,10 +161,13 @@ export default class FilmsPresenter {
       replace(updatedSortComponent, this.#sortComponent);
       this.#sortComponent = updatedSortComponent;
     }
+
+    this.#sortComponent.setSortTypeChangeHandler(this.#sortTypeChangeHandle);
+
     if (this.films.length === 0) {
       remove(this.#sortComponent);
+      this.#sortComponent = null;
     }
-    this.#sortComponent.setSortTypeChangeHandler(this.#sortTypeChangeHandle);
   };
 
   #renderFilmButtonMore(container) {
