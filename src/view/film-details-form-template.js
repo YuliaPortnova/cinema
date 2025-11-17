@@ -1,4 +1,4 @@
-import {EMOTIONS} from '../const.js';
+import { EMOTIONS } from '../const.js';
 
 const createEmotionItem = (emotionItem, checkedEmotionValue) =>
   `

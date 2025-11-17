@@ -4,9 +4,9 @@ import FilmsListContainerView from '../view/films-list-container-view.js';
 import FilmPresenter from './film-presenter.js';
 
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
-import {render} from '../framework/render.js';
-import {sortFilmsByRating} from '../utils/film.js';
-import {UserAction, UpdateType, TimeLimit, ExtraFilmListType, FILM_EXTRA_COUNT} from '../const';
+import { render } from '../framework/render.js';
+import { sortFilmsByRating } from '../utils/film.js';
+import { UserAction, UpdateType, TimeLimit, ExtraFilmListType, FILM_EXTRA_COUNT } from '../const';
 
 export default class FilmsExtraRatePresenter {
   #filmExtraRateComponent = new FilmsListExtraView(ExtraFilmListType.RATING);

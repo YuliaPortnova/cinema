@@ -10,8 +10,8 @@ import FilmPresenter from './film-presenter.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import { render, remove, replace, RenderPosition } from '../framework/render.js';
 import { sortFilmsByRating, sortFilmsByDate } from '../utils/film.js';
-import {FILMS_COUNT_PER_STEP, SortType, UserAction, UpdateType, FilterType, TimeLimit} from '../const.js';
-import {filter} from '../utils/filter.js';
+import { FILMS_COUNT_PER_STEP, SortType, UserAction, UpdateType, FilterType, TimeLimit } from '../const.js';
+import { filter } from '../utils/filter.js';
 export default class FilmsPresenter {
   #sortComponent = null;
   #filmsListEmptyComponent = null;
